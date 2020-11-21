@@ -19,7 +19,7 @@ class ProductController extends Controller
         //validation
         //required adalah contoh constraint
         $request->validate([
-            'product_name' => 'required|min:3',
+            'product_name' => 'required|min:8|max:15',
             'price' => 'required',
             'stock' => 'required'
         ]);
