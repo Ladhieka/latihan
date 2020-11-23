@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
+use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
@@ -14,16 +15,8 @@ class ProductController extends Controller
         return view('create',compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //validation
-        //required adalah contoh constraint
-        $request->validate([
-            'product_name' => 'required|min:8|max:15',
-            'price' => 'required',
-            'stock' => 'required'
-        ]);
-
         Product::create($request->all());
         return redirect('/products');
     }
