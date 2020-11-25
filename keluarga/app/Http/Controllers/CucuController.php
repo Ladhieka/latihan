@@ -3,52 +3,42 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Cucu;
+use App\Http\Requests\CucuRequest;
+
 
 class CucuController extends Controller
 {
     function index()
     {
-        $data = Cucu::all();
-
-        return response()->json( 
+        $cucu = Cucu::all();
+        
+        return new JsonResponse( 
             [
                 "message" => "Sukses Menampilkan data",
-                "data"    => $data
+                "data"    => $cucu
             ]
         );
     }
 
     function show($id)
     {
-        $data = Cucu::findOrFail($id);
+        $cucu = Cucu::findOrFail($id);
         
-        return response()->json( 
+        return new JsonResponse( 
             [
-                "message" => "Sukses Menampilkan data dengan id " . $id,
-                "data"    => $data
+                "message" => "Sukses Menampilkan data",
+                "data"    => $cucu
             ]
         );
     }
 
-    function store(Request $request)
+    function store(CucuRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required'
-        ]);
-
-        if($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()
-            ]);
-        }
-
-        $cucu = new Cucu;
-        $cucu->anak_id = $request->anak_id;
-        $cucu->name = $request->name;
-
-        $cucu->save();
-        return response()->json(   
+        $validated = $request->validated();
+        $cucu = Cucu::create($validated);
+        return new JsonResponse(   
             [
                 "message" => "Sukses Memasukkan data",
                 "data"    => $cucu
@@ -56,54 +46,31 @@ class CucuController extends Controller
         );
     }
 
-    function update(Request $request, $id)
+    function update(CucuRequest $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required'
-        ]);
+        $validated = $request->validated();
 
-        if($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()
-            ]);
-        }
+        $cucu = Cucu::findOrFail($id);
+        $cucu->update($validated);
+        $updatedFields = $cucu->getChanges();
 
-        $data = Cucu::where('id',$id)->first();
-        $data->anak_id = $request->anak_id ? $request->anak_id : $data->anak_id;
-        $data->name = $request->name ? $request->name : $data->name;
-
-        $data->save();
-        if($data){
-            return response()->json(   
-                [
-                    "message" => "Sukses mengupdate data " . $id,
-                    "data"    => $data
-                ]
-            );
-        }
-        return response()->json(   
+        return new JsonResponse(   
             [
-                "message" => "Cucu dengan " . $id . " tidak ditemukan"
-            ], 400
-        );     
+                "message" => "Sukses mengupdate data " ,
+                "data"    => $updatedFields
+            ]
+        );
     }
 
     function destroy($id)
     {
-        $data = Cucu::where('id',$id)->first();
+        $cucu = Cucu::findOrFail($id);;
 
-        if($data){
-            $data->delete();
-            return response()->json(   
+        $cucu->delete();
+            return new JsonResponse(   
                 [
-                    "message" => "Sukses Menghapus data dengan id " . $id
+                    "message" => "Sukses Menghapus data"
                 ]
-            );
-        }
-        return response()->json(   
-            [
-                "message" => "Kakek dengan " . $id . " tidak ditemukan"
-            ], 400
-        ); 
+            ); 
     }
 }

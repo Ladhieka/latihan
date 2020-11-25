@@ -13,7 +13,7 @@ class AnakRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class AnakRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'kakek_id' => 'required',
+            'name' => 'required'
         ];
     }
 }

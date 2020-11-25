@@ -13,4 +13,9 @@ class Kakek extends Model
     {
         return $this->hasMany('App\Anak');
     }
+
+    public function cucus()
+    {
+        return $this->hasManyThrough('App\Cucu','App\Anak','kakek_id','anak_id','id','id');
+    }
 }

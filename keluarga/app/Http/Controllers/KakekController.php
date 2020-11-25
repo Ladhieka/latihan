@@ -3,41 +3,41 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\HTtp\JsonResponse;
 use App\Kakek;
-use Validator;
 use App\Http\Requests\KakekRequest;
 
 class KakekController extends Controller
 {
     function index()
     {
-        $data = Kakek::all();
+        $kakek = Kakek::all();
         
-        return response()->json( 
+        return new JsonResponse( 
             [
                 "message" => "Sukses Menampilkan data",
-                "data"    => $data
+                "data"    => $kakek
             ]
         );
     }
 
     function show($id)
     {
-        $data = Kakek::findOrFail($id);
+        $kakek = Kakek::findOrFail($id);
         
-        return response()->json( 
+        return new JsonResponse( 
             [
-                "message" => "Sukses Menampilkan data dengan id " . $id,
-                "data"    => $data
+                "message" => "Sukses Menampilkan data",
+                "data"    => $kakek
             ]
         );
     }
 
     function store(KakekRequest $request)
-    {   
+    {
         $validated = $request->validated();
         $kakek = Kakek::create($validated);
-        return response()->json(   
+        return new JsonResponse(   
             [
                 "message" => "Sukses Memasukkan data",
                 "data"    => $kakek
@@ -47,42 +47,36 @@ class KakekController extends Controller
 
     function update(KakekRequest $request, $id)
     {
+        $validated = $request->validated();
 
-        $data = Kakek::where('id',$id)->first();
-        $data->name = $request->name ? $request->name : $data->name;
+        $kakek = Kakek::findOrFail($id);
+        $kakek->update($validated);
+        $updatedFields = $kakek->getChanges();
 
-        $data->save();
-        if($data){
-            return response()->json(   
-                [
-                    "message" => "Sukses mengupdate data " . $id,
-                    "data"    => $data
-                ]
-            );
-        }
-        return response()->json(   
+        return new JsonResponse(   
             [
-                "message" => "Kakek dengan " . $id . " tidak ditemukan"
-            ], 400
-        );     
+                "message" => "Sukses mengupdate data " ,
+                "data"    => $updatedFields
+            ]
+        );
     }
 
     function destroy($id)
     {
-        $data = Kakek::where('id',$id)->first();
+        $kakek = Kakek::findOrFail($id);
 
-        if($data){
-            $data->delete();
-            return response()->json(   
+        $kakek->delete();
+            return new JsonResponse(   
                 [
-                    "message" => "Sukses Menghapus data dengan id " . $id
+                    "message" => "Sukses Menghapus data"
                 ]
-            );
-        }
-        return response()->json(   
-            [
-                "message" => "Kakek dengan " . $id . " tidak ditemukan"
-            ], 400
-        ); 
+            ); 
+    }
+
+    function kakek_cucu ($id)
+    {
+        //eager loading
+        $data = Kakek::with('cucus')->where('id', $id)->first();
+        return $data;
     }
 }

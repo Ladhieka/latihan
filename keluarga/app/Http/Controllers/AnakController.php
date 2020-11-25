@@ -3,52 +3,41 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\HTtp\JsonResponse;
 use App\Anak;
+use App\Http\Requests\AnakRequest;
 
 class AnakController extends Controller
 {
     function index()
     {
-        $data = Anak::all();
+        $anak = Anak::all();
         
-        return response()->json( 
+        return new JsonResponse( 
             [
                 "message" => "Sukses Menampilkan data",
-                "data"    => $data
+                "data"    => $anak
             ]
         );
     }
 
     function show($id)
     {
-        $data = Anak::findOrFail($id);
+        $anak = Anak::findOrFail($id);
         
-        return response()->json( 
+        return new JsonResponse( 
             [
-                "message" => "Sukses Menampilkan data dengan id " . $id,
-                "data"    => $data
+                "message" => "Sukses Menampilkan data",
+                "data"    => $anak
             ]
         );
     }
 
-    function store(Request $request)
+    function store(AnakRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required'
-        ]);
-
-        if($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()
-            ]);
-        }
-
-        $anak = new Anak;
-        $anak->kakek_id = $request->kakek_id;
-        $anak->name = $request->name;
-
-        $anak->save();
-        return response()->json(   
+        $validated = $request->validated();
+        $anak = Anak::create($validated);
+        return new JsonResponse(   
             [
                 "message" => "Sukses Memasukkan data",
                 "data"    => $anak
@@ -56,54 +45,31 @@ class AnakController extends Controller
         );
     }
 
-    function update(Request $request, $id)
+    function update(AnakRequest $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required'
-        ]);
+        $validated = $request->validated();
 
-        if($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()
-            ]);
-        }
+        $anak = Anak::findOrFail($id);
+        $anak->update($validated);
+        $updatedFields = $anak->getChanges();
 
-        $data = Anak::where('id',$id)->first();
-        $data->kakek_id = $request->kakek_id ? $request->kakek_id : $data->kakek_id;
-        $data->name = $request->name ? $request->name : $data->name;
-
-        $data->save();
-        if($data){
-            return response()->json(   
-                [
-                    "message" => "Sukses mengupdate data " . $id,
-                    "data"    => $data
-                ]
-            );
-        }
-        return response()->json(   
+        return new JsonResponse(   
             [
-                "message" => "Anak dengan " . $id . " tidak ditemukan"
-            ], 400
-        );     
+                "message" => "Sukses mengupdate data " ,
+                "data"    => $updatedFields
+            ]
+        );
     }
 
     function destroy($id)
     {
-        $data = Anak::where('id',$id)->first();
+        $anak = Anak::findOrFail($id);
 
-        if($data){
-            $data->delete();
-            return response()->json(   
+        $anak->delete();
+            return new JsonResponse(   
                 [
-                    "message" => "Sukses Menghapus data dengan id " . $id
+                    "message" => "Sukses Menghapus data"
                 ]
-            );
-        }
-        return response()->json(   
-            [
-                "message" => "Kakek dengan " . $id . " tidak ditemukan"
-            ], 400
-        ); 
+            ); 
     }
 }

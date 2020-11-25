@@ -13,7 +13,7 @@ class CucuRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,6 +24,7 @@ class CucuRequest extends FormRequest
     public function rules()
     {
         return [
+            'anak_id' => 'required',
             'name' => 'required'
         ];
     }

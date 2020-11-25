@@ -41,13 +41,16 @@ Route::put('/anak/{id}', 'AnakController@update');
 Route::delete('/anak/{id}', 'AnakController@destroy');
 
 
-Route::get('/cucus', 'CucuController@get');
+Route::get('/cucus', 'CucuController@index');
 
-Route::get('/cucu/{id}', 'CucuController@getById');
+Route::get('/cucu/{id}', 'CucuController@show');
 
-Route::post('/cucu', 'CucuController@post');
+Route::post('/cucu', 'CucuController@store');
 
-Route::put('/cucu/{id}', 'CucuController@put');
+Route::put('/cucu/{id}', 'CucuController@update');
 
-Route::delete('/cucu/{id}', 'CucuController@delete');
+Route::delete('/cucu/{id}', 'CucuController@destroy');
+
+
+Route::get('/kakek/cucu/{id}', 'KakekController@kakek_cucu');
 
