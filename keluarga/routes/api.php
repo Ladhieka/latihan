@@ -52,5 +52,16 @@ Route::put('/cucu/{id}', 'CucuController@update');
 Route::delete('/cucu/{id}', 'CucuController@destroy');
 
 
+Route::get('/mainans', 'MainanController@index');
+
+Route::get('/mainan/{mainan}', 'MainanController@show');
+
+Route::post('/mainan', 'MainanController@store');
+
+Route::put('/mainan/{id}', 'MainanController@update');
+
+Route::delete('/mainan/{id}', 'MainanController@destroy');
+
+
 Route::get('/kakek/cucu/{id}', 'KakekController@kakek_cucu');
 

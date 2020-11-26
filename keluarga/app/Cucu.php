@@ -13,4 +13,9 @@ class Cucu extends Model
     {
         return $this->belongsTo('App\Anak');
     }
+
+    public function mainan()
+    {
+        return $this->belongsToMany('App\Mainan', 'cucu_mainan');
+    }
 }

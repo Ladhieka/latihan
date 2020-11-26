@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Cucu;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Cucu;
 use App\Http\Requests\CucuRequest;
 
 
