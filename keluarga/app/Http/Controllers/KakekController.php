@@ -76,7 +76,14 @@ class KakekController extends Controller
     function kakek_cucu ($id)
     {
         //eager loading
-        $data = Kakek::with('cucus')->where('id', $id)->first();
-        return $data;
+        $kakeks = Kakek::with('cucus')->findOrFail($id);
+        return $kakeks;
+    }
+
+    function kakek_anak ($id)
+    {
+        //eager loading
+        $kakeks = Kakek::with('anaks')->findOrFail($id);
+        return $kakeks;
     }
 }

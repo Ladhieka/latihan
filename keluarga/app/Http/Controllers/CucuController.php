@@ -73,4 +73,5 @@ class CucuController extends Controller
                 ]
             ); 
     }
+
 }

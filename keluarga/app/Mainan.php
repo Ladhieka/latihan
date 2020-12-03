@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Mainan extends Model
 {
     protected $fillable = ['name'];
+    protected $hidden   = ['created_at','updated_at'];
 
     public function cucu()
     {

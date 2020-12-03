@@ -72,4 +72,11 @@ class AnakController extends Controller
                 ]
             ); 
     }
+
+    function anak_cucu ($id)
+    {
+        //eager loading
+        $anaks = Anak::with('cucus')->findOrFail($id);
+        return $anaks;
+    }
 }

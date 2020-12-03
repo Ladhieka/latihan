@@ -6,6 +6,7 @@ use App\Mainan;
 use Illuminate\Http\Request;
 use Illuminate\HTtp\JsonResponse;
 use App\Http\Requests\MainanRequest;
+// use Illuminate\Eloquent\Database\Collection;
 
 class MainanController extends Controller
 {
@@ -115,7 +116,7 @@ class MainanController extends Controller
      */
     public function destroy(Mainan $mainan)
     {
-        $mainans = Mainan::findOrFail($id);;
+        $mainans = Mainan::findOrFail($mainan);;
 
         $mainans->delete();
             return new JsonResponse(   

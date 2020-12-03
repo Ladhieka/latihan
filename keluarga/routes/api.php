@@ -58,10 +58,17 @@ Route::get('/mainan/{mainan}', 'MainanController@show');
 
 Route::post('/mainan', 'MainanController@store');
 
-Route::put('/mainan/{id}', 'MainanController@update');
+Route::put('/mainan/{mainan}', 'MainanController@update');
 
-Route::delete('/mainan/{id}', 'MainanController@destroy');
+Route::delete('/mainan/{mainan}', 'MainanController@destroy');
 
 
 Route::get('/kakek/cucu/{id}', 'KakekController@kakek_cucu');
+
+Route::get('/kakek/anak/{id}', 'KakekController@kakek_anak');
+
+Route::get('/anak/cucu/{id}', 'AnakController@anak_cucu');
+
+
+
 
