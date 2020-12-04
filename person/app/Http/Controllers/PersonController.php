@@ -146,8 +146,7 @@ class PersonController extends Controller
 
     public function find($param1,$param2){
     
-        $i = 0;
-        $i2 = 0;
+   
         $input1 = Person::where('name',$param1)->first();
         $input2 = Person::where('name', $param2)->first();
    
@@ -162,43 +161,40 @@ class PersonController extends Controller
         $child = $input1->children->first();
         $child2 = $input2->children->first();
 
-        do {
             if($child->id == $input2->parent_id)
             {
                 $message = "$param1 adalah kakek dari $param2";
             } elseif($child2->id == $input1->parent_id)
             {
                 $message = "$param1 adalah cucu dari $param2";
-            }
-
-            $child = $child->children->first();
-
-            $i++;
-
-        }while($child->id != $input2->parent_id && $input2->parent_id != 0);
-
-        do {
-            if($child2->id == $input1->parent_id)
-            {
-                $message = "$param1 adalah cucu dari $param2";
-            }
-
-            $child2 = $child2->children->first();
-
-            $i2++;
-     
-        }while($child2->id != $input1->parent_id && $input1->parent_id != 0);
-
-        if($child2->id == $input1->parent_id && $i > 0)
-        {
-            $message = "$param1 adalah cicit dari $param2";
-        } elseif($i2 > 0)
-        {
-            $message = "$param1 adalah kakek buyut dari $param2";
-        }
+            } 
 
         return new JsonResponse([
             'message' => $message
         ]);              
     }
 }
+
+
+        // }while($child->id != $input2->parent_id && $input2->parent_id != 0);
+
+        // do {
+        //     if($child2->id == $input1->parent_id)
+        //     {
+        //         $message = "$param1 adalah cucu dari $param2";
+        //     }
+
+        //     $child2 = $child2->children->first();
+
+        //     $i2++;
+     
+        // }while($child2->id != $input1->parent_id && $input1->parent_id != 0);
+
+        // if($child2->id == $input1->parent_id && $i > 0)
+        // {
+        //     $message = "$param1 adalah cicit dari $param2";
+        // }
+        // } elseif($i2 > 0)
+        // {
+        //     $message = "$param1 adalah kakek buyut dari $param2";
+        // }
