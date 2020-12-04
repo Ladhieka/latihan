@@ -146,27 +146,62 @@ class PersonController extends Controller
 
     public function find($param1,$param2){
     
+        // $message = "";
         $input1 = Person::where('name',$param1)->first();
         $input2 = Person::where('name', $param2)->first();
-
+        // $person = Person::where('name',$param1)->first();
+        // $child  = $person->descendants()->first();
+        // $name   =
         if($input1->id == $input2->parent_id)
         {
-            return new JsonResponse([
-                'message' => $param1 . " adalah ayah dari " . $param2
-            ]);
-        } elseif($input2->id == $input1->parent_id)
-        {
-            return new JsonResponse([
-                'message' => $param1 . " adalah anak dari " . $param2
-            ]);
+           $message = "$param1 adalah ayah dari $param2";
+        } elseif($input1->parent_id == $input2->id)
+        {    
+            $message = "$param1 adalah anak dari $param2";
         }
 
-        return new JsonResponse([
-        //    "ancestor" => $x->ancestor()->toArray(),
-           "descendant" => $descendant,
-           "ancestor"   => $ancestor
+            $child = $input1->children->first();
+          
+            $child2 = $input2->children->first();
 
-        ]);
+        // do {
+    
+            if($child->id == $input2->parent_id)
+            {
+                $message = "$param1 adalah kakek dari $param2";
+            }  else if($child2->id == $input1->parent_id)
+            {
+                $message = "$param1 adalah cucu dari $param2";
+            }
 
+            // $child = $child->children->first();
+
+        // }while($child->id != $input2->parent_id && $input2->parent_id != 0 );
+        
+      
+
+            return new JsonResponse([
+                'message' => $message
+            ]);
+                    
     }
 }
+
+
+
+        //     $parent = $input1->parent->first();
+
+        //     $child = $child->children->first();
+
+        // //      elseif($parent->parent_id == $input2->id)
+        // //     // {
+        // //     //     $message = "$param1 . ' adalah cucu dari ' . $param2";
+        // //     // } elseif($input2->parent_id == $child->id)
+        // //     // {
+        // //     //     $message = "$param1 . ' adalah kakek dari ' . $param2";
+        // //     }
+
+
+
+
+

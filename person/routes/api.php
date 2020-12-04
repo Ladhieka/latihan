@@ -22,7 +22,7 @@ Route::delete('/person/{person}', 'PersonController@destroy');
 
 Route::get('/relation/{param1}','PersonController@relation');
 
-Route::get('/relation/{param1}/{param2}','PersonController@find');
+Route::get('/find/{param1}/{param2}','PersonController@find');
 
 
 Route::post('/register','RegisterController@register');
