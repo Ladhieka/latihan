@@ -146,31 +146,54 @@ class PersonController extends Controller
 
     public function find($param1,$param2){
     
-   
         $input1 = Person::where('name',$param1)->first();
         $input2 = Person::where('name', $param2)->first();
-   
+        $flag = true;
+        $ct = 1;
+
         if($input1->id == $input2->parent_id)
         {
            $message = "$param1 adalah ayah dari $param2";
+           $flag == false;
         } elseif($input1->parent_id == $input2->id)
         {    
             $message = "$param1 adalah anak dari $param2";
+            $flag == false;
         }
 
         $child = $input1->children->first();
         $child2 = $input2->children->first();
+            
+        if($child->id == $input2->parent_id)
+        {
+            $message = "$param1 adalah kakek dari $param2";
+            $flag == false;
+        } elseif($child2->id == $input1->parent_id)
+        {
+            $message = "$param1 adalah cucu dari $param2";
+            $flag == false;
+        } 
 
-            if($child->id == $input2->parent_id)
-            {
-                $message = "$param1 adalah kakek dari $param2";
-            } elseif($child2->id == $input1->parent_id)
-            {
-                $message = "$param1 adalah cucu dari $param2";
-            } 
+        $grand = $child->children->first();
+        $grand2 = $grand->children->first();
+        $grand3 = $grand2->children->first();
 
+
+        // $grand2 = $child2->children->first();
+            
+        // if($grand->id == $input2->parent_id)
+        // {
+        //     $message = "$param1 adalah kakek buyut dari $param2";
+        //     $flag == false;
+        // } elseif($grand2->id == $input1->parent_id)
+        // {
+        //     $message = "$param1 adalah cicit dari $param2";
+        //     $flag == false;
+        // } 
+      
+        
         return new JsonResponse([
-            'message' => $message
+            'message' => $grand
         ]);              
     }
 }
